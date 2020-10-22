@@ -72,7 +72,6 @@ int line_num(int x)
 
 signed main()
 {
-    
 	n=input(),k=input();
     memset(dp,0,sizeof(dp));
     S=(1<<n)-1;

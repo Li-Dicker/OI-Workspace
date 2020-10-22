@@ -1,12 +1,17 @@
 #include<bits/stdc++.h>
 #define int long long
-#define N 10
+#define N 111111
 #define INF 0x3f3f3f3f
 using namespace std;
 
-int n,k;
-int S;
-int dp[(1<<N)][(1<<N)][N];
+int n,m,k,edgenum=1,cirnum=0;
+int tmp1,tmp2;
+int head[N],cir[N];
+
+struct Edge
+{
+	int v,next,vis,vis2,dfn,low;
+}edge[N<<1];
 
 namespace IOstream
 {
@@ -46,43 +51,74 @@ namespace IOstream
 }
 using namespace IOstream;
 
-int check_line(int x,int y)
+void adde(int u,int v)
 {
-    for (int i=2;i<=n-1;i++)
-    {
-        if (((x>>(i-1))&1)&&(((x>>i)&1)||((x>>(i-2))&1))&&(((y>>(i-1))&1)||((y>>i)&1)||((y>>(i-2))&1)))
-            return false;
-        if (((y>>(i-1))&1)&&(((y>>i)&1)||((y>>(i-2))&1))&&(((x>>(i-1))&1)||((x>>i)&1)||((x>>(i-2))&1)))
-            return false;
-    }
-    return true;
+	edge[++edgenum].next=head[u];
+	head[u]=edgenum;
+	edge[edgenum].v=v;
+	edge[edgenum].vis=0;
 }
 
-int line_num(int x)
+void dfs(int u,int fa,int from)
 {
-    int res=0;
-    while (x)
-    {
-        if (x&1)
-            res++;
-        x>>=1;
-    }
-    return res;
+	for (int i=head[u];i;i=edge[i].next)
+	{
+		int v=edge[i].v;
+		if (v==fa)
+			continue ;
+		if (edge[i].vis)
+		{
+			cir[++cirnum]=edge[from].dfn-edge[i].dfn+1;
+			continue ;
+		}
+		edge[i].vis=edge[i^1].vis=1;
+		edge[i].dfn=edge[i^1].dfn=edge[from].dfn+1;
+	}
 }
 
 signed main()
 {
-    
-	n=input(),k=input();
-    memset(dp,0,sizeof(dp));
-    S=(1<<n)-1;
-    for (int i=1;i<=n;i++)
-        for (int s=0;s<=S;s++)
-            for (int l=0;l<=S;l++)
-                if (check_line(l,s))
-                {
-                    int p=line_num(s),q=line_num(l);
-                    dp[s][l][i]++;
-                }
+	n=input(),m=input(),k=input();
+	for (int i=1;i<=m;i++)
+	{
+		tmp1=input(),tmp2=input();
+		adde(tmp1,tmp2);
+		adde(tmp2,tmp1);
+	}
+	for (int i=1;i<=n;i++)
+	{
+		if (!edge[head[i]].vis)
+		{
+			dfs(i,0,0);
+		}
+	}
+	for (int i=1;i<=cirnum;i++)
+		print(cir[i],'\n');
     return 0;
 }
+/*
+
+17 21 6
+1 2
+1 3
+2 3
+3 5
+3 4
+4 6
+6 5
+6 8
+8 7
+8 9
+9 10
+10 11
+11 9
+8 12
+12 13
+13 14
+14 12 
+14 15
+14 16
+15 17
+16 17
+
+*/

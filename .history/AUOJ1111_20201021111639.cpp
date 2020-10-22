@@ -6,7 +6,7 @@ using namespace std;
 
 int n,k;
 int S;
-int dp[(1<<N)][(1<<N)][N];
+int dp[(1<<N)][N][N][N];
 
 namespace IOstream
 {
@@ -50,12 +50,14 @@ int check_line(int x,int y)
 {
     for (int i=2;i<=n-1;i++)
     {
-        if (((x>>(i-1))&1)&&(((x>>i)&1)||((x>>(i-2))&1))&&(((y>>(i-1))&1)||((y>>i)&1)||((y>>(i-2))&1)))
+        if (((x>>(i-1))&1)&&(((x>>i)&1)||((x>>(i-2))&1)))
             return false;
-        if (((y>>(i-1))&1)&&(((y>>i)&1)||((y>>(i-2))&1))&&(((x>>(i-1))&1)||((x>>i)&1)||((x>>(i-2))&1)))
+        if (((y>>(i-1))&1)&&(((y>>i)&1)||((y>>(i-2))&1)))
             return false;
+        if (((x>>(i-1))&1)&&(((y>>(i-1))&1)||((y>>i)&1)||((y>>(i-2))&1)))
+            return false;
+        if (((y>>(i-1))&1)&&(((x>>(i-1))&1)||((x>>i)&1)||((x>>(i-2))&1)))
     }
-    return true;
 }
 
 int line_num(int x)
@@ -72,9 +74,7 @@ int line_num(int x)
 
 signed main()
 {
-    
 	n=input(),k=input();
-    memset(dp,0,sizeof(dp));
     S=(1<<n)-1;
     for (int i=1;i<=n;i++)
         for (int s=0;s<=S;s++)
@@ -82,7 +82,6 @@ signed main()
                 if (check_line(l,s))
                 {
                     int p=line_num(s),q=line_num(l);
-                    dp[s][l][i]++;
                 }
     return 0;
 }

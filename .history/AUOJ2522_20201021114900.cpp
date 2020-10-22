@@ -1,12 +1,17 @@
 #include<bits/stdc++.h>
 #define int long long
-#define N 10
+#define N 111111
 #define INF 0x3f3f3f3f
 using namespace std;
 
-int n,k;
-int S;
-int dp[(1<<N)][(1<<N)][N];
+int n,m,k,edgenum=0,dfnum=0;
+int tmp1,tmp2;
+int head[N],dfn[N],low[N],vis[N];
+
+struct Edge
+{
+	int v,next;
+}edge[N<<1];
 
 namespace IOstream
 {
@@ -46,43 +51,48 @@ namespace IOstream
 }
 using namespace IOstream;
 
-int check_line(int x,int y)
+void adde(int u,int v)
 {
-    for (int i=2;i<=n-1;i++)
-    {
-        if (((x>>(i-1))&1)&&(((x>>i)&1)||((x>>(i-2))&1))&&(((y>>(i-1))&1)||((y>>i)&1)||((y>>(i-2))&1)))
-            return false;
-        if (((y>>(i-1))&1)&&(((y>>i)&1)||((y>>(i-2))&1))&&(((x>>(i-1))&1)||((x>>i)&1)||((x>>(i-2))&1)))
-            return false;
-    }
-    return true;
+	edge[++edgenum].next=head[u];
+	head[u]=edgenum;
+	edge[edgenum].v=v;
 }
 
-int line_num(int x)
+void dfs(int u,int fa)
 {
-    int res=0;
-    while (x)
-    {
-        if (x&1)
-            res++;
-        x>>=1;
-    }
-    return res;
+	dfn[u]=low[u]=++dfnum;
+	for (int i=head[u];i;i=edge[i].next)
+	{
+		int v=edge[i].v;
+		if (v==fa)
+			continue ;
+		if (vis[v])
+		{
+			low[u]=low[v];
+			continue ;
+		}
+		else
+			dfs(v,u);
+		if (low[v]!=dfn[v])
+			low[u]=min(low[u],low[v]);
+	}
 }
 
 signed main()
 {
-    
-	n=input(),k=input();
-    memset(dp,0,sizeof(dp));
-    S=(1<<n)-1;
-    for (int i=1;i<=n;i++)
-        for (int s=0;s<=S;s++)
-            for (int l=0;l<=S;l++)
-                if (check_line(l,s))
-                {
-                    int p=line_num(s),q=line_num(l);
-                    dp[s][l][i]++;
-                }
+	n=input(),m=input(),k=input();
+	for (int i=1;i<=m;i++)
+	{
+		tmp1=input(),tmp2=input();
+		adde(tmp1,tmp2);
+		adde(tmp2,tmp1);
+	}
+	for (int i=1;i<=n;i++)
+	{
+		if (!vis[i])
+		{
+			dfs(i,0);
+		}
+	}
     return 0;
 }
