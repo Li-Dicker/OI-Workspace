@@ -4,10 +4,9 @@
 #define INF 0x3f3f3f3f
 using namespace std;
 
-int n,K,ans=0;
+int n,k;
 int S;
-int calc[N];
-int dp[N][(1<<N)][N*N];
+int dp[(1<<N)][(1<<N)][N];
 
 namespace IOstream
 {
@@ -49,21 +48,13 @@ using namespace IOstream;
 
 int check_line(int x,int y)
 {
-    if ((x&1)&&(((x>>1)&1)||(y&1)||((y>>1)&1)))
-        return false;
-    if ((y&1)&&(((y>>1)&1)||(x&1)||((x>>1)&1)))
-        return false;
     for (int i=2;i<=n-1;i++)
     {
-        if (((x>>(i-1))&1)&&(((x>>i)&1)||((x>>(i-2))&1)||((y>>(i-1))&1)||((y>>i)&1)||((y>>(i-2))&1)))
+        if (((x>>(i-1))&1)&&(((x>>i)&1)||((x>>(i-2))&1))&&(((y>>(i-1))&1)||((y>>i)&1)||((y>>(i-2))&1)))
             return false;
-        if (((y>>(i-1))&1)&&(((y>>i)&1)||((y>>(i-2))&1)||((x>>(i-1))&1)||((x>>i)&1)||((x>>(i-2))&1)))
+        if (((y>>(i-1))&1)&&(((y>>i)&1)||((y>>(i-2))&1))&&(((x>>(i-1))&1)||((x>>i)&1)||((x>>(i-2))&1)))
             return false;
     }
-    if (((x>>(n-1))&1)&&((x>>(n-2))&1)||((y>>(n-1))&1)||((y>>(n-2))&1))
-        return false;
-    if (((y>>(n-1))&1)&&((y>>(n-2))&1)||((x>>(n-1))&1)||((x>>(n-2))&1))
-        return false;
     return true;
 }
 
@@ -81,21 +72,16 @@ int line_num(int x)
 
 signed main()
 {
-	n=input(),K=input();
-    print(check_line(4,4),'\n');
+	n=input(),k=input();
     memset(dp,0,sizeof(dp));
     S=(1<<n)-1;
-    for (int i=0;i<=S;i++)
-        if(check_line(i,0))
-            calc[i]=line_num(i),dp[1][i][calc[i]]=1;
-    for (int i=2;i<=n;i++)
-        for (int j=0;j<=S;j++)
-            for (int k=0;k<=S;k++)
-                if (check_line(k,j))
-                    for (int l=calc[j]+calc[k];l<=K;l++)
-                        dp[i][j][l]+=dp[i-1][k][l-calc[j]];
-    for (int i=0;i<=S;i++)
-        ans+=dp[n][i][K],print(dp[1][i][K],'\n');
-    print(ans,'\n');
+    for (int i=1;i<=n;i++)
+        for (int s=0;s<=S;s++)
+            for (int l=0;l<=S;l++)
+                if (check_line(l,s))
+                {
+                    int p=line_num(s),q=line_num(l);
+                    dp[s][l][i]++;
+                }
     return 0;
 }

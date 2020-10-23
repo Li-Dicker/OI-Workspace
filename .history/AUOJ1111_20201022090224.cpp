@@ -82,7 +82,6 @@ int line_num(int x)
 signed main()
 {
 	n=input(),K=input();
-    print(check_line(4,4),'\n');
     memset(dp,0,sizeof(dp));
     S=(1<<n)-1;
     for (int i=0;i<=S;i++)
@@ -95,7 +94,7 @@ signed main()
                     for (int l=calc[j]+calc[k];l<=K;l++)
                         dp[i][j][l]+=dp[i-1][k][l-calc[j]];
     for (int i=0;i<=S;i++)
-        ans+=dp[n][i][K],print(dp[1][i][K],'\n');
+        ans+=dp[n][i][K],print(dp[n-1][i][K],'\n');
     print(ans,'\n');
     return 0;
 }

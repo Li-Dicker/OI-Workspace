@@ -4,10 +4,10 @@
 #define INF 0x3f3f3f3f
 using namespace std;
 
-int n,K,ans=0;
+int n,k,ans=0;
 int S;
 int calc[N];
-int dp[N][(1<<N)][N*N];
+int dp[N][(1<<N)][N];
 
 namespace IOstream
 {
@@ -49,21 +49,13 @@ using namespace IOstream;
 
 int check_line(int x,int y)
 {
-    if ((x&1)&&(((x>>1)&1)||(y&1)||((y>>1)&1)))
-        return false;
-    if ((y&1)&&(((y>>1)&1)||(x&1)||((x>>1)&1)))
-        return false;
     for (int i=2;i<=n-1;i++)
     {
-        if (((x>>(i-1))&1)&&(((x>>i)&1)||((x>>(i-2))&1)||((y>>(i-1))&1)||((y>>i)&1)||((y>>(i-2))&1)))
+        if (((x>>(i-1))&1)&&(((x>>i)&1)||((x>>(i-2))&1))&&(((y>>(i-1))&1)||((y>>i)&1)||((y>>(i-2))&1)))
             return false;
-        if (((y>>(i-1))&1)&&(((y>>i)&1)||((y>>(i-2))&1)||((x>>(i-1))&1)||((x>>i)&1)||((x>>(i-2))&1)))
+        if (((y>>(i-1))&1)&&(((y>>i)&1)||((y>>(i-2))&1))&&(((x>>(i-1))&1)||((x>>i)&1)||((x>>(i-2))&1)))
             return false;
     }
-    if (((x>>(n-1))&1)&&((x>>(n-2))&1)||((y>>(n-1))&1)||((y>>(n-2))&1))
-        return false;
-    if (((y>>(n-1))&1)&&((y>>(n-2))&1)||((x>>(n-1))&1)||((x>>(n-2))&1))
-        return false;
     return true;
 }
 
@@ -81,8 +73,8 @@ int line_num(int x)
 
 signed main()
 {
-	n=input(),K=input();
-    print(check_line(4,4),'\n');
+    print(check_line(45,18),'\n');
+	n=input(),k=input();
     memset(dp,0,sizeof(dp));
     S=(1<<n)-1;
     for (int i=0;i<=S;i++)
@@ -92,10 +84,12 @@ signed main()
         for (int j=0;j<=S;j++)
             for (int k=0;k<=S;k++)
                 if (check_line(k,j))
-                    for (int l=calc[j]+calc[k];l<=K;l++)
-                        dp[i][j][l]+=dp[i-1][k][l-calc[j]];
+                    for (int l=0;l<=k;l++)
+                        if (l>=calc[j]+calc[k])
+                            dp[i][j][l]+=dp[i-1][k][l-calc[j]]+1;
     for (int i=0;i<=S;i++)
-        ans+=dp[n][i][K],print(dp[1][i][K],'\n');
+        ans+=dp[n][i][k];
     print(ans,'\n');
     return 0;
+
 }
