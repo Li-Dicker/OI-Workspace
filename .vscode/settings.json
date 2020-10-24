@@ -1,0 +1,8 @@
+{
+    "C_Cpp.errorSquiggles": "Enabled",
+    "files.associations": {
+        "*.cpp": "cpp",
+        "cstdio": "cpp",
+        "random": "cpp"
+    }
+}

@@ -1,0 +1,17 @@
+
+button[data-v-dbce64be] {
+  margin-right: .5em;
+}
+.bookmark[data-v-dbce64be] {
+  margin-left: .3em;
+  padding: .3em;
+}
+.button-in-anchor[data-v-dbce64be] {
+  vertical-align: baseline;
+}
+@media (max-width: 576px) {
+.button-in-anchor[data-v-dbce64be] {
+    width: 100%;
+}
+}
+
