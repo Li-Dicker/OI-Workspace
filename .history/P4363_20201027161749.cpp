@@ -1,10 +1,7 @@
 #include<bits/stdc++.h>
 #define int long long
-#define N 111111
+#define N 11
 #define INF 0x3f3f3f3f
-#define MOD ((int)1e9+7)
-#define next _nxt_
-#define y _yy_
 using namespace std;
 namespace IOstream
 {
@@ -41,12 +38,20 @@ namespace IOstream
         while (BUFSIZE)
             putchar(BUF[BUFSIZE--]+'0');
     }
-
 }
 using namespace IOstream;
 
+int n,m;
+int a[N][N],b[N][N];
+
 signed main()
 {
-    
+	n=input(),m=input();
+    for (int i=1;i<=n;i++)
+        for (int j=1;j<=m;j++)
+            a[i][j]=input();
+    for (int i=1;i<=n;i++)
+        for (int j=1;j<=m;j++)
+            b[i][j]=input();
     return 0;
 }

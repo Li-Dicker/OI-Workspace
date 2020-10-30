@@ -2,9 +2,6 @@
 #define int long long
 #define N 111111
 #define INF 0x3f3f3f3f
-#define MOD ((int)1e9+7)
-#define next _nxt_
-#define y _yy_
 using namespace std;
 namespace IOstream
 {
@@ -41,12 +38,14 @@ namespace IOstream
         while (BUFSIZE)
             putchar(BUF[BUFSIZE--]+'0');
     }
-
 }
 using namespace IOstream;
 
+int n,m;
+int a[N][N],b[N][N];
+
 signed main()
 {
-    
+	
     return 0;
 }

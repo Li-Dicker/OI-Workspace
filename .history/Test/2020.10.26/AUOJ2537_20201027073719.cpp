@@ -1,10 +1,8 @@
 #include<bits/stdc++.h>
 #define int long long
-#define N 111111
+#define N 1111111
 #define INF 0x3f3f3f3f
-#define MOD ((int)1e9+7)
-#define next _nxt_
-#define y _yy_
+#define MOD 998244353
 using namespace std;
 namespace IOstream
 {
@@ -41,12 +39,34 @@ namespace IOstream
         while (BUFSIZE)
             putchar(BUF[BUFSIZE--]+'0');
     }
-
 }
 using namespace IOstream;
 
+int T,n,a,b;
+int dp[N][3];
+
+void pre()
+{
+	dp[1][1]=1;
+	for (int i=2;i<=N-11111;i++)
+	{
+		dp[i-1][2]=dp[i-2][1];
+		dp[i][1]=(dp[i-1][1]+dp[i-2][2])%MOD;
+	}
+}
+
 signed main()
 {
-    
+	pre();
+	T=input();
+	while (T--)
+	{
+		n=input(),a=input(),b=input();
+		if (a>b)
+			swap(a,b);
+		a=(a==1)?1:(a+1);
+		b=(b==n)?n:(b-1);
+		print(dp[b-a+1][1],'\n');
+	}
     return 0;
 }

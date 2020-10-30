@@ -41,12 +41,11 @@ namespace IOstream
         while (BUFSIZE)
             putchar(BUF[BUFSIZE--]+'0');
     }
-
 }
 using namespace IOstream;
 
 signed main()
 {
-    
+	
     return 0;
 }

@@ -1,10 +1,9 @@
 #include<bits/stdc++.h>
 #define int long long
-#define N 111111
-#define INF 0x3f3f3f3f
-#define MOD ((int)1e9+7)
 #define next _nxt_
 #define y _yy_
+#define N 10
+#define INF 0x3f3f3f3f
 using namespace std;
 namespace IOstream
 {
@@ -41,12 +40,57 @@ namespace IOstream
         while (BUFSIZE)
             putchar(BUF[BUFSIZE--]+'0');
     }
-
 }
 using namespace IOstream;
 
+int n,m,S1,S2;
+int a[N][N],b[N][N];
+int dp[1<<(1<<N)];
+
+bool check(int x,int k)
+{
+    if (k>=n)
+        return false;
+    x>>=(k-1);
+    if (!(x&1))
+        return false;
+    if ((x>>1)&1)
+        return false;
+    return true;
+}
+
+int change(int x,int k)
+{
+    x^=(1<<(k-1));
+    x|=(1<<k);
+    return x;
+}
+
+void dfs(int statue,int person)
+{
+    if (statue==S2)
+        return ;
+    for (int i=1;i<n+m;i++)
+        if (check(statue,i))
+        {
+            int next=change(statue);
+            dp[change(statue)]=min(dp[next],dp[statue]+(person==0)?(a):(b));
+        }
+}
+
 signed main()
 {
-    
+	n=input(),m=input();
+    for (int i=1;i<=n;i++)
+        for (int j=1;j<=m;j++)
+            a[i][j]=input();
+    for (int i=1;i<=n;i++)
+        for (int j=1;j<=m;j++)
+            b[i][j]=input();
+    S1=(1<<n)-1;
+    S2=((1<<n)-1)<<m;
+    memset(dp,INF,sizeof(dp));
+    dp[S1]=0;
+    dfs(S1,0);
     return 0;
 }
