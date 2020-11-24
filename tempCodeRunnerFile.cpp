@@ -1,1 +1,2 @@
-priority_queue<pair<int ,int > >q;
+
+	cout<<"AAAAAAAAA";

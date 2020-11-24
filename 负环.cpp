@@ -52,7 +52,7 @@ namespace IOstream
 }
 using namespace IOstream;
 
-int n,m,s,edgenum=0;
+int T,n,m,s,edgenum=0,flag=0;
 int tmp1,tmp2,tmp3;
 int head[N],dis[N],vis[N],cnt[N];
 
@@ -67,6 +67,16 @@ void adde(int u,int v,int w)
 	head[u]=edgenum;
 	edge[edgenum].v=v;
 	edge[edgenum].w=w;
+}
+
+void init()
+{
+	for (int i=0;i<=n+11;i++)
+		dis[i]=INF,vis[i]=0;
+	flag=0;
+	memset(head,0,sizeof(head));
+	memset(cnt,0,sizeof(cnt));
+	edgenum=0;
 }
 
 void spfa(int x)
@@ -87,29 +97,56 @@ void spfa(int x)
 				dis[v]=dis[u]+edge[i].w;
 				cnt[v]=cnt[u]+1;
 				if (cnt[v]>=n)
+				{
+					puts("YES");
 					return ;
+				}
 				if (!vis[v])
 				{
+					// cnt[v]++;
+					// if (cnt[v]>=n)
+					// {
+					// 	puts("YES");
+					// 	return ;
+					// }
 					vis[v]=1;
 					q.push(v);
 				}
 			}
 		}
 	}
+	puts("NO");
 }
 
 signed main()
 {
-	n=input(),m=input(),s=input();
-	for (int i=1;i<=m;i++)
+	T=input();
+	while (T--)
 	{
-		tmp1=input(),tmp2=input(),tmp3=input();
-		adde(tmp1,tmp2,tmp3);
+		n=input(),m=input();
+		init();
+		for (int i=1;i<=m;i++)
+		{
+			tmp1=input(),tmp2=input(),tmp3=input();
+			adde(tmp1,tmp2,tmp3);
+			if (tmp3>=0)
+				adde(tmp2,tmp1,tmp3);
+		}
+		spfa(1);
 	}
-	for (int i=0;i<=n+11;i++)
-		dis[i]=INF,vis[i]=0;
-	spfa(s);
-	for (int i=1;i<=n;i++)
-		print(dis[i],' ');
 	return 0;
 }
+/*
+
+2
+3 4
+1 2 2
+1 3 4
+2 3 1
+3 1 -3
+3 3
+1 2 3
+2 3 4
+3 1 -8
+
+*/
